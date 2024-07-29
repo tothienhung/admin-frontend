@@ -5,7 +5,16 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'public-sans-regular': ['Public Sans', 'sans-serif'],
+        'public-sans-bold': ['Public Sans', 'sans-serif'],
+      },
+      fontWeight: {
+        'public-sans-regular': 400,
+        'public-sans-bold': 700,
+      }
+    },
   },
   plugins: [],
 }
