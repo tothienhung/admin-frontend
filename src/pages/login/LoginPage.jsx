@@ -1,18 +1,25 @@
-import { useState } from 'react';
-import { FaFacebook, FaTwitter } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
 
-function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { signinSchema } from './signinSchema';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Thực hiện logic đăng nhập ở đây
-    console.log('Username:', username);
-    console.log('Password:', password);
+import googleImage from '/src/imgs/Google.png';
+import facebookImage from '/src/imgs/Facebook.png';
+import twitterImage from '/src/imgs/Twitter.png';
+
+const LoginPage = () => {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signinSchema),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-[450px]  max-w-md p-8 space-y-6 bg-white rounded-md shadow-md">
@@ -23,18 +30,19 @@ function LoginPage() {
           <h1 className="font-['Public_Sans'] text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px]">
             Please sign in to your account and start the adventure
           </h1>
-        </div>        <form onSubmit={handleSubmit} className="space-y-4">
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="username" className="font-['Public_Sans'] block text-[13px] font-normal text-gray-700">Email or Username</label>
+            <label htmlFor="email" className="font-['Public_Sans'] block text-[13px] font-normal text-gray-700">Email or Username</label>
             <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
+              {...register('email')}
+              type="email"
+              id="email"
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
+            {errors.email && (
+              <span className="text-red-900">{errors.email.message}</span>
+            )}
           </div>
           <div className="relative">
             <div className="flex items-center justify-between">
@@ -42,14 +50,15 @@ function LoginPage() {
               <a href="#" className="font-['Public_Sans']  text-[13px]  text-indigo-500 hover:text-indigo-600">Forgot Password?</a>
             </div>
             <input
+              {...register('password')}
               type="password"
               id="password"
               name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
+            {errors.password && (
+              <span className="text-red-900">{errors.password.message}</span>
+            )}
           </div>
           <div className="flex items-center">
             <input type="checkbox" className="w-[18px] h-[18px] text-indigo-600 transition duration-150 ease-in-out form-checkbox" />
@@ -75,9 +84,10 @@ function LoginPage() {
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
           <div className="flex justify-center space-x-4">
-            <FaFacebook className="text-blue-500 transition-colors duration-300 hover:text-blue-700" />
-            <FaTwitter className="text-blue-400 transition-colors duration-300 hover:text-blue-600" />
-            <FcGoogle className="text-gray-500 transition-colors duration-300 hover:text-gray-700" />
+
+            <img src={facebookImage} alt="Facebook" />
+            <img src={twitterImage} alt="Twitter" />
+            <img src={googleImage} alt="Google" />
           </div>
         </form>
       </div>
