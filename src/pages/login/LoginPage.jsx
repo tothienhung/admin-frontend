@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,7 +7,7 @@ import { signinSchema } from './signinSchema';
 import googleImage from '/src/imgs/Google.png';
 import facebookImage from '/src/imgs/Facebook.png';
 import twitterImage from '/src/imgs/Twitter.png';
-
+import { useEffect, useState } from 'react';
 const LoginPage = () => {
 
   const {
@@ -16,9 +17,37 @@ const LoginPage = () => {
   } = useForm({
     resolver: yupResolver(signinSchema),
   });
+  const [rMe, setrMe] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/signin`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        const result = response.data;
+        console.log(result);
+
+        if (rMe) {
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('password', data.password);
+          localStorage.setItem('rememberMe', true);
+        } else {
+          localStorage.removeItem('email');
+          localStorage.removeItem('password');
+          localStorage.removeItem('rememberMe');
+        }
+      } else {
+        console.error('Login failed with status:', response.status);
+      }
+
+    } catch (error) {
+      console.error('There was a problem with the axios operation:', error);
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -61,7 +90,10 @@ const LoginPage = () => {
             )}
           </div>
           <div className="flex items-center">
-            <input type="checkbox" className="w-[18px] h-[18px] text-indigo-600 transition duration-150 ease-in-out form-checkbox" />
+            <input type="checkbox" {...register('rememberMe')}
+              checked={rMe}
+              onChange={(e) => setrMe(e.target.checked)}
+              className="w-[18px] h-[18px] text-indigo-600 transition duration-150 ease-in-out form-checkbox" />
             <h1 className="ml-2 font-['Public_Sans'] text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px]">Remember me</h1>
           </div>
           <button
