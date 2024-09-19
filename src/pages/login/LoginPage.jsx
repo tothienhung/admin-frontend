@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { signinSchema } from './signinSchema';
 import { apiService } from '/src/services/apiService';
+import { useNavigate } from 'react-router-dom';
 
 import googleImage from '/src/imgs/Google.png';
 import facebookImage from '/src/imgs/Facebook.png';
@@ -17,7 +18,7 @@ const LoginPage = () => {
     resolver: yupResolver(signinSchema),
   });
   const [rMe, setrMe] = useState(false);
-
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
@@ -26,7 +27,6 @@ const LoginPage = () => {
       if (response.status === 200) {
         const result = response.data;
         console.log(result);
-
         if (rMe) {
           localStorage.setItem('email', data.email);
           localStorage.setItem('password', data.password);
@@ -39,6 +39,7 @@ const LoginPage = () => {
         // Lưu token vào localStorage nếu cần
         localStorage.setItem('accessToken', result.accessToken);
         localStorage.setItem('refreshToken', result.refreshToken);
+        navigate('/list');
       } else {
         console.error('Login failed with status:', response.status);
       }
