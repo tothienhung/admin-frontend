@@ -39,7 +39,7 @@ const LoginPage = () => {
         // Lưu token vào localStorage nếu cần
         localStorage.setItem('accessToken', result.accessToken);
         localStorage.setItem('refreshToken', result.refreshToken);
-        navigate('/list');
+        navigate('/home');
       } else {
         console.error('Login failed with status:', response.status);
       }

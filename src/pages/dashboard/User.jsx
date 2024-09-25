@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaUser, FaSearch, FaBell, FaEdit, FaTrash, FaEllipsisV } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaEllipsisV } from 'react-icons/fa';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 
@@ -39,37 +39,12 @@ const User = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md">
-        <div className="p-4">
-          <h1 className="text-2xl font-extrabold">DEVTO</h1>
-        </div>
-        <nav>
-          <ul>
-            <li className="flex items-center p-4 hover:bg-gray-200">
-              <FaUser className="w-5 h-5 mr-2 text-gray-600" />
-              <a href="#">User</a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+
+
 
       {/* Main content */}
       <div className="flex-1 p-6">
-        <header className="p-4 mb-6 bg-white shadow-md">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full p-2 pl-10 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <FaSearch className="absolute left-3 top-2.5 text-gray-600" />
-            <FaBell className="absolute right-14 top-3.5 text-gray-600 cursor-pointer" />
-            <div className="absolute right-3 top-1.5 h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
-              <span className="text-green">A</span>
-            </div>
-          </div>
-        </header>
+
 
         <main>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
