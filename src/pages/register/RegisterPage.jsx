@@ -5,7 +5,8 @@ import { registerSchema } from './registerSchema';
 
 import { useState } from 'react';
 import { registerService } from './../../services/registerService';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const RegisterPage = () => {
   const {
     register,
@@ -15,16 +16,17 @@ const RegisterPage = () => {
     resolver: yupResolver(registerSchema),
   });
   const [rMe, setrMe] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await registerService.register(data);
 
       if (response.status === 200) {
         const result = response.data;
         console.log(result);
-
+        toast.success('Registration successful!');
         // if (rMe) {
         //   localStorage.setItem('email', data.email);
         //   localStorage.setItem('password', data.password);
@@ -36,11 +38,17 @@ const RegisterPage = () => {
         // }
 
       } else {
-        console.error('Registration failed with status:', response.status);
+        toast.error(`Registration failed: ${response.status}`);
       }
 
     } catch (error) {
-      console.error('There was a problem with the axios operation:', error);
+      if (error.response) {
+        toast.error(`Registration failed: ${error.response.data.message}`);
+      } else {
+        toast.error('There was a problem with the axios operation');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -110,9 +118,10 @@ const RegisterPage = () => {
           </div>
           <button
             type="submit"
-            className="w-full font-['Public_Sans'] px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className={`w-full font-['Public_Sans'] px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+            disabled={isLoading}
           >
-            Sign up
+            {isLoading ? 'Loading...' : 'Sign up'}
           </button>
           <div className="flex justify-center mt-8">
             <p className="text-gray-700 font-['Public_Sans'] text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px] ">
@@ -125,6 +134,7 @@ const RegisterPage = () => {
 
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

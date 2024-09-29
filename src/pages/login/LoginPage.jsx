@@ -9,6 +9,10 @@ import googleImage from '/src/imgs/Google.png';
 import facebookImage from '/src/imgs/Facebook.png';
 import twitterImage from '/src/imgs/Twitter.png';
 import { useState } from 'react';
+
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const LoginPage = () => {
   const {
     register,
@@ -18,15 +22,19 @@ const LoginPage = () => {
     resolver: yupResolver(signinSchema),
   });
   const [rMe, setrMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await apiService.login(data);
 
       if (response.status === 200) {
         const result = response.data;
         console.log(result);
+        toast.success("Login successful!");
+
         if (rMe) {
           localStorage.setItem('email', data.email);
           localStorage.setItem('password', data.password);
@@ -39,13 +47,21 @@ const LoginPage = () => {
         // Lưu token vào localStorage nếu cần
         localStorage.setItem('accessToken', result.accessToken);
         localStorage.setItem('refreshToken', result.refreshToken);
-        navigate('/home');
+        setTimeout(() => {
+          navigate('/home');
+        }, 1000);
       } else {
-        console.error('Login failed with status:', response.status);
+        toast.error(`Login failed: ${response.status}`);
       }
 
     } catch (error) {
-      console.error('There was a problem with the axios operation:', error);
+      if (error.response) {
+        toast.error(`Login failed: ${error.response.data.message}`);
+      } else {
+        toast.error('There was a problem with the axios operation');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -97,10 +113,12 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className="w-full font-['Public_Sans'] px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className={`w-full font-['Public_Sans'] px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+            disabled={isLoading}
           >
-            Sign in
+            {isLoading ? 'Loading...' : 'Sign in'}
           </button>
+
           <div className="flex justify-center mt-8">
             <p className="text-gray-700 font-['Public_Sans'] text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px] ">
               New on our platform?
@@ -122,6 +140,7 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }
