@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         'public-sans-regular': ['Public Sans', 'sans-serif'],
         'public-sans-bold': ['Public Sans', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
       fontWeight: {
         'public-sans-regular': 400,
