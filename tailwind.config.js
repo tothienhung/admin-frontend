@@ -7,13 +7,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'public-sans-regular': ['Public Sans', 'sans-serif'],
-        'public-sans-bold': ['Public Sans', 'sans-serif'],
         'inter': ['Inter', 'sans-serif'],
       },
       fontWeight: {
-        'public-sans-regular': 400,
-        'public-sans-bold': 700,
+        'inter-regular': 400,
+        'inter-bold': 700,
       }
     },
   },
