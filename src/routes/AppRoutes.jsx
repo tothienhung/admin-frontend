@@ -7,6 +7,8 @@ import RegisterPage from '../pages/register/RegisterPage';
 import User from '../pages/dashboard/User';
 import ChangePassword from '../pages/dashboard/ChangePassword';
 import Layout from '../pages/dashboard/Layout';
+import ForgotPasswordPage from '../pages/forgotpassword/ForgotPasswordPage'
+import ResetPasswordPage from '../pages/resetpassword/ResetPasswordPage';
 const AppRoutes = () => {
   return (
     <Router>
@@ -14,8 +16,8 @@ const AppRoutes = () => {
         <Route path="/app" element={<App />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-
-
+        <Route path="/forgot-pasword" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
         <Route path="/home" element={<Layout />}>
           {/* <Route path="list-user" element={<ListUser />} /> */}
