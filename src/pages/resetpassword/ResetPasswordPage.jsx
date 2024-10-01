@@ -22,9 +22,9 @@ const ResetPasswordPage = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_APP_URL}/api/auth/reset-password`, {
-        token, // Gửi token cùng với mật khẩu mới
-        newPassword: data.password,
+      // Đính kèm token vào URL và gửi password trong body
+      const response = await axios.post(`${import.meta.env.VITE_APP_URL}/api/auth/reset-password/${token}`, {
+        password: data.password, // Gửi password trong body
       });
 
       if (response.status === 200) {
