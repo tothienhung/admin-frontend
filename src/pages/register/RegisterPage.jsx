@@ -57,8 +57,8 @@ const RegisterPage = () => {
 
         <h1 className="font-inter text-center text-black font-black   text-[35px]  leading-[14px] mb-10">DEVTO</h1>
         <div className="space-y-[6px] ">
-          <h1 className="text-[var(--Light-Typography-Color-Heading-Text,#4B465C)]  font-semibold font-inter text-[22px] leading-[30px]    ">Adventure starts here</h1>
-          <h1 className="font-inter text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px]">
+          <h1 className="text-[#5d586c]  font-semibold font-inter text-[22px] leading-[30px]    ">Adventure starts here</h1>
+          <h1 className="font-inter text-[15px] font-normal   text-[#6f6b7d] leading-[22px]">
             Make your app management easy and fun!
           </h1>
         </div>
@@ -76,7 +76,7 @@ const RegisterPage = () => {
             )}
           </div>
           <div>
-            <label htmlFor="email" className="font-inter block text-[13px] font-normal text-gray-700">Email</label>
+            <label htmlFor="email" className="font-inter block text-[13px] font-normal  text-[#6f6b7d]">Email</label>
             <input
               {...register('email')}
               type="email"
@@ -89,7 +89,7 @@ const RegisterPage = () => {
           </div>
           <div className="relative">
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="font-inter block text-[13px] font-normal text-gray-700">Password</label>
+              <label htmlFor="password" className="font-inter block text-[13px] font-normal  text-[#6f6b7d]">Password</label>
 
             </div>
             <input
@@ -108,7 +108,7 @@ const RegisterPage = () => {
               checked={rMe}
               onChange={(e) => setrMe(e.target.checked)}
               className="w-[18px] h-[18px] text-indigo-600 transition duration-150 ease-in-out form-checkbox" />
-            <p className=" ml-2 text-gray-700 font-inter text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px] ">
+            <p className=" ml-2   font-inter text-[15px] font-normal   text-[#6f6b7d] leading-[22px] ">
               I agree to
               <a href="#" className="ml-1   text-blue-500 hover:text-blue-700 font-inter text-[15px] font-normal   leading-[22px]">
                 privacy policy & terms
@@ -118,13 +118,13 @@ const RegisterPage = () => {
           </div>
           <button
             type="submit"
-            className={`w-full font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+            className={`w-full font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-[#7367f0] hover:bg-[#5a53d1]'}`}
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Sign up'}
           </button>
           <div className="flex justify-center mt-8">
-            <p className="text-gray-700 font-inter text-[15px] font-normal  text-[var(--Light-Typography-Color-Body-Text,#4B465C)] leading-[22px] ">
+            <p className="  font-inter text-[15px] font-normal  text-[#6f6b7d] leading-[22px] ">
               Already have an account?
               <a href="/" className="ml-1   text-blue-500 hover:text-blue-700 font-inter text-[15px] font-normal   leading-[22px]">
                 Sign in instead!
