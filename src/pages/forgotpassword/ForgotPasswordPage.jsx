@@ -86,7 +86,7 @@ const ForgotPasswordPage = () => {
               className={`w-auto font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-indigo-600 hover:bg-indigo-700'} ml-2`}
               disabled={isLoading}
             >
-              {isLoading ? 'Loading...' : 'Search'}
+              {isLoading ? 'Loading...' : 'Send'}
             </button>
           </div>
         </form>

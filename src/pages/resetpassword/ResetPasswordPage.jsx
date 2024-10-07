@@ -14,6 +14,7 @@ const ResetPasswordPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(resetPasswordSchema),
   });
@@ -31,6 +32,7 @@ const ResetPasswordPage = () => {
 
       if (response.status === 200) {
         toast.success("Mật khẩu đã được đặt lại thành công.");
+        reset();
         navigate('/');
       } else {
         toast.error(`Không thành công: ${response.status}`);

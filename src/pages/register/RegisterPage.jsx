@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema } from './registerSchema';
-
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { registerService } from './../../services/registerService';
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,6 +17,7 @@ const RegisterPage = () => {
   });
   const [rMe, setrMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     setIsLoading(true);
@@ -27,16 +28,9 @@ const RegisterPage = () => {
         const result = response.data;
         console.log(result);
         toast.success('Registration successful!');
-        // if (rMe) {
-        //   localStorage.setItem('email', data.email);
-        //   localStorage.setItem('password', data.password);
-        //   localStorage.setItem('rememberMe', true);
-        // } else {
-        //   localStorage.removeItem('email');
-        //   localStorage.removeItem('password');
-        //   localStorage.removeItem('rememberMe');
-        // }
-
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
       } else {
         toast.error(`Registration failed: ${response.status}`);
       }
