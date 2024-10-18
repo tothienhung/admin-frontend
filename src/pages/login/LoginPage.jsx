@@ -61,30 +61,27 @@ const LoginPage = () => {
     }
   }
 
-  const responseGoogle = async (response) => {
-    debugger
-    if (response.error) {
-      toast.error('Google login failed: ' + response.error)
-      return
-    }
 
-    const { tokenId } = response
-    console.log('Google Token ID:', tokenId)
+  const responseGoogle = async (response) => {
+    console.log('Google Response:', response);
+
+    const idToken = response.credential || response.tokenId; // Dùng `credential` hoặc `tokenId` tùy API Google
+    console.log('Google ID Token:', idToken);
 
     try {
-      const result = await apiService.loginWithGoogle(tokenId)
+      const result = await apiService.loginWithGoogle(idToken); // Truyền trực tiếp idToken
       if (result.status === 200) {
-        toast.success('Google login successful!')
-        localStorage.setItem('accessToken', result.data.accessToken)
-        localStorage.setItem('refreshToken', result.data.refreshToken)
-        navigate('/home')
+        toast.success('Google login successful!');
+        localStorage.setItem('accessToken', result.data.token);
+        localStorage.setItem('user', JSON.stringify(result.data.user));
+        navigate('/home');
       } else {
-        toast.error(`Google login failed: ${result.status}`)
+        toast.error(`Google login failed: ${result.status}`);
       }
     } catch (error) {
-      toast.error('There was a problem with Google login')
+      toast.error('There was a problem with Google login: ' + error.message);
     }
-  }
+  };
 
   useEffect(() => {
     function start() {
@@ -168,9 +165,8 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className={`w-full font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-              isLoading ? 'bg-gray-500' : 'bg-[#7367f0] hover:bg-[#5a53d1]'
-            }`}
+            className={`w-full font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-[#7367f0] hover:bg-[#5a53d1]'
+              }`}
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Sign in'}

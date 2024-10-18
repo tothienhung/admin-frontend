@@ -35,5 +35,5 @@ apiClient.interceptors.response.use(
 
 export const apiService = {
   login: (data) => apiClient.post('/api/auth/signin', data),
-  loginWithGoogle: (tokenId) => apiClient.post('/api/auth/google', { idToken: tokenId }),
+  loginWithGoogle: (id_token) => apiClient.post('/api/auth/google', { id_token }),
 };
