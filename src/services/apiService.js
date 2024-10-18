@@ -35,5 +35,5 @@ apiClient.interceptors.response.use(
 
 export const apiService = {
   login: (data) => apiClient.post('/api/auth/signin', data),
-  // Other API methods like register, getProfile can be added here
+  loginWithGoogle: (id_token) => apiClient.post('/api/auth/google', { id_token }),
 };
