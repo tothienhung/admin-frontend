@@ -19,7 +19,7 @@ const ChangePassword = () => {
       const token = localStorage.getItem('accessToken'); // Lấy JWT token từ localStorage
 
       const response = await axios.post(
-        'https://dev-to-backend-gold.vercel.app/api/auth/change-password',
+        'https://dev-to-backend-abx5.vercel.app/api/auth/change-password',
         { currentPassword, newPassword },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -43,7 +43,9 @@ const ChangePassword = () => {
       <h2 className="mb-6 text-2xl font-semibold text-gray-800">Settings</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Current Password</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Current Password
+          </label>
           <input
             type="password"
             placeholder="Current Password"
@@ -55,7 +57,9 @@ const ChangePassword = () => {
         </div>
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-700">New Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              New Password
+            </label>
             <input
               type="password"
               placeholder="New Password"
@@ -66,7 +70,9 @@ const ChangePassword = () => {
             />
           </div>
           <div className="w-1/2">
-            <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Confirm New Password
+            </label>
             <input
               type="password"
               placeholder="Confirm New Password"
@@ -77,8 +83,10 @@ const ChangePassword = () => {
             />
           </div>
         </div>
-        <h2 className="mt-2 mb-2 text-xl font-semibold text-gray-800">Password Requirements:</h2>
-        <ul className='text-sm font-medium text-gray-700 '>
+        <h2 className="mt-2 mb-2 text-xl font-semibold text-gray-800">
+          Password Requirements:
+        </h2>
+        <ul className="text-sm font-medium text-gray-700 ">
           <li>. Minimum 8 characters long - the more, the better</li>
           <li>. At least one lowercase character</li>
           <li>. At least one number, symbol, or whitespace character</li>

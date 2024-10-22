@@ -12,11 +12,14 @@ const User = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('https://dev-to-backend-gold.vercel.app/api/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          'https://dev-to-backend-abx5.vercel.app/api/users',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 200) {
           setUsers(response.data);
@@ -35,17 +38,15 @@ const User = () => {
     setCurrentPage(data.selected);
   };
 
-  const displayedUsers = users.slice(currentPage * usersPerPage, (currentPage + 1) * usersPerPage);
+  const displayedUsers = users.slice(
+    currentPage * usersPerPage,
+    (currentPage + 1) * usersPerPage
+  );
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-
-
-
       {/* Main content */}
       <div className="flex-1 p-6">
-
-
         <main>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             {/* Statistics Cards */}
@@ -77,7 +78,12 @@ const User = () => {
           <h3 className="text-xl font-medium">Search Filter</h3>
           <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 xl:grid-cols-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Username
+              </label>
               <input
                 type="text"
                 id="username"
@@ -87,7 +93,12 @@ const User = () => {
             </div>
 
             <div>
-              <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
+              <label
+                htmlFor="status"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Status
+              </label>
               <select
                 id="status"
                 className="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
@@ -99,7 +110,12 @@ const User = () => {
             </div>
 
             <div>
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+              <label
+                htmlFor="date"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Date
+              </label>
               <input
                 type="date"
                 id="date"
@@ -128,7 +144,7 @@ const User = () => {
               </tr>
             </thead>
             <tbody>
-              {displayedUsers.map(user => (
+              {displayedUsers.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-100">
                   <td className="p-2 text-center border">{user.id}</td>
                   <td className="p-2 text-center border">{user.username}</td>
@@ -154,11 +170,17 @@ const User = () => {
             onPageChange={handlePageClick}
             containerClassName={'flex justify-center mt-4'}
             pageClassName={'mx-1'}
-            pageLinkClassName={'px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200'}
+            pageLinkClassName={
+              'px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200'
+            }
             previousClassName={'mx-1'}
-            previousLinkClassName={'px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200'}
+            previousLinkClassName={
+              'px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200'
+            }
             nextClassName={'mx-1'}
-            nextLinkClassName={'px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200'}
+            nextLinkClassName={
+              'px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200'
+            }
             activeClassName={'bg-blue-500 text-white'}
           />
         </div>
