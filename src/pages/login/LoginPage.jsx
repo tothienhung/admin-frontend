@@ -1,17 +1,19 @@
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { gapi } from 'gapi-script'
-import { FaGoogle } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { GoogleLogin } from 'react-google-login'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { gapi } from 'gapi-script';
 
-import { signinSchema } from './signinSchema'
-import { apiService } from '/src/services/apiService'
-import facebookImage from '/src/imgs/Facebook.png'
-import twitterImage from '/src/imgs/Twitter.png'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { signinSchema } from './signinSchema';
+import { apiService } from '/src/services/apiService';
+import facebookImage from '/src/imgs/Facebook.png';
+import twitterImage from '/src/imgs/Twitter.png';
+import googleImage from '/src/imgs/Google.png';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
   const {
@@ -20,47 +22,46 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signinSchema),
-  })
-  const [rMe, setrMe] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
+  });
+  const [rMe, setrMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await apiService.login(data)
+      const response = await apiService.login(data);
       if (response.status === 200) {
-        const result = response.data
-        toast.success('Login successful!')
+        const result = response.data;
+        toast.success('Login successful!');
 
         if (rMe) {
-          localStorage.setItem('email', data.email)
-          localStorage.setItem('password', data.password)
-          localStorage.setItem('rememberMe', true)
+          localStorage.setItem('email', data.email);
+          localStorage.setItem('password', data.password);
+          localStorage.setItem('rememberMe', true);
         } else {
-          localStorage.removeItem('email')
-          localStorage.removeItem('password')
-          localStorage.removeItem('rememberMe')
+          localStorage.removeItem('email');
+          localStorage.removeItem('password');
+          localStorage.removeItem('rememberMe');
         }
-        localStorage.setItem('accessToken', result.accessToken)
-        localStorage.setItem('refreshToken', result.refreshToken)
+        localStorage.setItem('accessToken', result.accessToken);
+        localStorage.setItem('refreshToken', result.refreshToken);
         setTimeout(() => {
-          navigate('/home')
-        }, 1000)
+          navigate('/home');
+        }, 1000);
       } else {
-        toast.error(`Login failed: ${response.status}`)
+        toast.error(`Login failed: ${response.status}`);
       }
     } catch (error) {
       if (error.response) {
-        toast.error(`Login failed: ${error.response.data.message}`)
+        toast.error(`Login failed: ${error.response.data.message}`);
       } else {
-        toast.error('There was a problem with the axios operation')
+        toast.error('There was a problem with the axios operation');
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-
+  };
 
   const responseGoogle = async (response) => {
     console.log('Google Response:', response);
@@ -88,10 +89,32 @@ const LoginPage = () => {
       gapi.client.init({
         clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         scope: 'email',
-      })
+      });
     }
-    gapi.load('client:auth2', start)
-  }, [])
+    gapi.load('client:auth2', start);
+  }, []);
+
+  const responseFacebook = async (response) => {
+    if (response.accessToken) {
+      try {
+        const result = await apiService.loginWithFacebook(response.accessToken);
+        if (result.status === 200) {
+          toast.success('Facebook login successful!');
+          localStorage.setItem('accessToken', result.data.token);
+          localStorage.setItem('user', JSON.stringify(result.data.user));
+          navigate('/home');
+        } else {
+          toast.error(`Facebook login failed: ${result.status}`);
+        }
+      } catch (error) {
+        toast.error(
+          'There was a problem with Facebook login: ' + error.message
+        );
+      }
+    } else {
+      toast.error('Facebook login failed: No access token received.');
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -165,8 +188,9 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className={`w-full font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isLoading ? 'bg-gray-500' : 'bg-[#7367f0] hover:bg-[#5a53d1]'
-              }`}
+            className={`w-full font-inter px-4 py-2 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+              isLoading ? 'bg-gray-500' : 'bg-[#7367f0] hover:bg-[#5a53d1]'
+            }`}
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Sign in'}
@@ -191,8 +215,24 @@ const LoginPage = () => {
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
           <div className="flex justify-center space-x-4">
-            <img src={facebookImage} alt="Facebook" />
-            <img src={twitterImage} alt="Twitter" />
+            <div>
+              <FacebookLogin
+                appId={import.meta.env.VITE_FACEBOOK_CLIENT_ID}
+                autoLoad={false}
+                fields="name,email,picture"
+                callback={responseFacebook}
+                render={(renderProps) => (
+                  <button onClick={renderProps.onClick}>
+                    <img src={facebookImage} alt="Facebook" />
+                  </button>
+                )}
+              />
+            </div>
+
+            <div>
+              <img src={twitterImage} alt="Twitter" />
+            </div>
+
             <div>
               <GoogleLogin
                 clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
@@ -203,11 +243,10 @@ const LoginPage = () => {
                 cookiePolicy={'single_host_origin'}
                 render={(renderProps) => (
                   <button
-                    className="flex items-center p-2 border border-gray-300 rounded-md"
                     onClick={renderProps.onClick}
                     disabled={renderProps.disabled}
                   >
-                    <FaGoogle size={14} className="mr-2" />
+                    <img src={googleImage} alt="Google" />
                   </button>
                 )}
               />
@@ -217,7 +256,7 @@ const LoginPage = () => {
       </div>
       <ToastContainer />
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
